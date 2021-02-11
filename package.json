@@ -1,0 +1,60 @@
+{
+	"name": "ops",
+	"displayName": "ops",
+	"description": "Ops is a tool for creating and running a Nanos unikernel. It is used to package, create and run your application as a nanos unikernel instance.",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.53.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:ops.run",
+		"onCommand:ops.runOpen",
+		"onCommand:ops.build",
+		"onCommand:ops.stop"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "ops.run",
+				"title": "Ops: Run"
+			},
+			{
+				"command": "ops.runOpen",
+				"title": "Ops: Run open file"
+			},
+			{
+				"command": "ops.stop",
+				"title": "Ops: Stop"
+			},
+			{
+				"command": "ops.build",
+				"title": "Ops: Build"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.53.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.4",
+		"@types/node": "^12.11.7",
+		"eslint": "^7.19.0",
+		"@typescript-eslint/eslint-plugin": "^4.14.1",
+		"@typescript-eslint/parser": "^4.14.1",
+		"glob": "^7.1.6",
+		"mocha": "^8.2.1",
+		"typescript": "^4.1.3",
+		"vscode-test": "^1.5.0"
+	}
+}
