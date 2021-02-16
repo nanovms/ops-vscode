@@ -17,7 +17,7 @@ export default class Ops {
     let args: string[] = [];
 
     if (filePath.indexOf(".js") >= 0) {
-      args = ["load", "node_v14.2.0", "-a", filePath];
+      args = ["pkg", "load", "node_v14.2.0", "-a", filePath];
     } else {
       args = ["run", filePath];
     }
