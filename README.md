@@ -2,6 +2,7 @@
 
 The Ops extension makes it easy to build, and run unikernels from Visual Studio Code.
 
+![Demo](https://raw.githubusercontent.com/nanovms/ops-vscode/master/images/animated/examples.gif)
 ## Features
 
 - [X] Run unikernel
