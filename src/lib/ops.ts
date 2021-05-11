@@ -36,7 +36,6 @@ export default class Ops {
   }
 
   _runOps(args: string[]): ChildProcessWithoutNullStreams {
-    console.log(args)
     return this.spawn("ops", args, { shell: '/bin/bash' });
   }
 }
