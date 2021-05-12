@@ -1,4 +1,4 @@
-import { ChildProcessWithoutNullStreams, spawn, SpawnOptionsWithoutStdio } from "child_process";
+import { ChildProcessWithoutNullStreams, SpawnOptionsWithoutStdio } from "child_process";
 
 type Spawn = (command: string, args?: readonly string[] | undefined, options?: SpawnOptionsWithoutStdio | undefined) => ChildProcessWithoutNullStreams;
 
@@ -9,17 +9,27 @@ export default class Ops {
     this.spawn = _spawner;
   }
 
-  build(filePath: string): ChildProcessWithoutNullStreams {
-    return this._runOps(["build", filePath]);
+  build(filePath: string, configPath: string): ChildProcessWithoutNullStreams {
+    let args = ["build", filePath];
+
+    if (configPath) {
+      args = args.concat(["-c", configPath])
+    }
+
+    return this._runOps(args);
   }
 
-  run(filePath: string): ChildProcessWithoutNullStreams {
+  run(filePath: string, configPath: string): ChildProcessWithoutNullStreams {
     let args: string[] = [];
 
     if (filePath.indexOf(".js") >= 0) {
       args = ["pkg", "load", "node_v14.2.0", "-a", filePath];
     } else {
       args = ["run", filePath];
+    }
+
+    if (configPath) {
+      args = args.concat(["-c", configPath])
     }
 
     return this._runOps(args);

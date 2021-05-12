@@ -15,7 +15,8 @@
 		"onCommand:ops.run",
 		"onCommand:ops.runOpen",
 		"onCommand:ops.build",
-		"onCommand:ops.stop"
+		"onCommand:ops.stop",
+		"onCommand:ops.runWithConfig"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -35,6 +36,10 @@
 			{
 				"command": "ops.build",
 				"title": "Ops: Build"
+			},
+			{
+				"command": "ops.runWithConfig",
+				"title": "Ops: Run with configuration"
 			}
 		]
 	},

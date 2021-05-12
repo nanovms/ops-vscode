@@ -22,6 +22,9 @@ export function activate(context: vscode.ExtensionContext) {
 	let runOpenCmd = vscode.commands.registerCommand('ops.runOpen', handleCmd(cmdHandler.runOpen, out));
 	context.subscriptions.push(runOpenCmd);
 
+	let runWithConfigCmd = vscode.commands.registerCommand('ops.runWithConfig', handleCmd(cmdHandler.runWithConfig, out));
+	context.subscriptions.push(runWithConfigCmd);
+
 	let runBuild = vscode.commands.registerCommand('ops.build', handleCmd(cmdHandler.build, out));
 	context.subscriptions.push(runBuild);
 

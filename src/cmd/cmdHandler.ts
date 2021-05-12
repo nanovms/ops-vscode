@@ -5,8 +5,8 @@ import pickExplorerFile from "./pickExplorerFile";
 import { Nanos } from "./NanosRepo";
 
 interface Ops {
-  run(filePath: string): ChildProcessWithoutNullStreams
-  build(filePath: string): ChildProcessWithoutNullStreams
+  run(filePath: string, configPath: string): ChildProcessWithoutNullStreams
+  build(filePath: string, configPath: string): ChildProcessWithoutNullStreams
 }
 
 interface NanosRepo {
@@ -28,12 +28,37 @@ export default class CmdHandler {
 
   build = async (): Promise<ChildProcessWithoutNullStreams> => {
     const filePath = await pickExplorerFile();
-    return this.ops.build(filePath);
+    return this.ops.build(filePath, "");
   };
 
   run = async (): Promise<ChildProcessWithoutNullStreams> => {
     const filePath = await pickExplorerFile();
-    const proc = this.ops.run(filePath);
+    const proc = this.ops.run(filePath, "");
+
+    this.nanosRepo.add({
+      pid: proc.pid,
+      filePath: filePath,
+    });
+
+    proc.on("close", () => {
+      this.nanosRepo.removeByPID(proc.pid);
+    });
+
+    return proc;
+  };
+
+  runWithConfig = async (): Promise<ChildProcessWithoutNullStreams> => {
+    const filePath = await pickExplorerFile({
+      title: "Select a ELF or javascript file"
+    });
+    const configPath = await pickExplorerFile({
+      title: "Select the configuration file",
+      filters: {
+        "JSON": ["json"]
+      }
+    });
+
+    const proc = this.ops.run(filePath, configPath);
 
     this.nanosRepo.add({
       pid: proc.pid,
@@ -56,7 +81,7 @@ export default class CmdHandler {
       throw new Error("Open the file you want to execute");
     }
 
-    const proc = this.ops.run(filePath);
+    const proc = this.ops.run(filePath, "");
 
     this.nanosRepo.add({
       pid: proc.pid,
