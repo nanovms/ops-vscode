@@ -1,7 +1,6 @@
 import { ChildProcessWithoutNullStreams } from 'child_process';
 import * as vscode from 'vscode';
 
-import { Nanos } from './NanosRepo';
 import handleError from './handleError';
 import logStream from './logStream';
 import finishCmd from './finishCmd';
