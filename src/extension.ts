@@ -30,6 +30,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let stopCmd = vscode.commands.registerCommand('ops.stop', handleCmd(cmdHandler.stop, out));
 	context.subscriptions.push(stopCmd);
+
+	let runImage = vscode.commands.registerCommand("ops.runImage", handleCmd(cmdHandler.runImage, out));
+	context.subscriptions.push(runImage);
+
+	let stopImage = vscode.commands.registerCommand("ops.stopImage", handleCmd(cmdHandler.stopImage, out));
+	context.subscriptions.push(stopImage);
 }
 
 // this method is called when your extension is deactivated

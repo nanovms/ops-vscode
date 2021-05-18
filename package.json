@@ -16,7 +16,9 @@
 		"onCommand:ops.runOpen",
 		"onCommand:ops.build",
 		"onCommand:ops.stop",
-		"onCommand:ops.runWithConfig"
+		"onCommand:ops.runWithConfig",
+		"onCommand:ops.runImage",
+		"onCommand:ops.stopImage"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -40,6 +42,14 @@
 			{
 				"command": "ops.runWithConfig",
 				"title": "Ops: Run with configuration"
+			},
+			{
+				"command": "ops.runImage",
+				"title": "Ops: Run Image"
+			},
+			{
+				"command": "ops.stopImage",
+				"title": "Ops: Stop Image"
 			}
 		]
 	},
