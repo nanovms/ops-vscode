@@ -8,6 +8,7 @@ The Ops extension makes it easy to build, and run unikernels from Visual Studio 
 - [X] Run unikernel
 - [X] Build image
 - [X] Stop unikernel
+- [X] Create instance from image
 - [ ] Load unikernel from package
 - [ ] Deploy to cloud provider
 
