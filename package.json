@@ -16,7 +16,9 @@
 		"onCommand:ops.runOpen",
 		"onCommand:ops.build",
 		"onCommand:ops.stop",
-		"onCommand:ops.runWithConfig"
+		"onCommand:ops.runWithConfig",
+		"onCommand:ops.startInstance",
+		"onCommand:ops.stopInstance"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -40,6 +42,14 @@
 			{
 				"command": "ops.runWithConfig",
 				"title": "Ops: Run with configuration"
+			},
+			{
+				"command": "ops.startInstance",
+				"title": "Ops: Start Instance"
+			},
+			{
+				"command": "ops.stopInstance",
+				"title": "Ops: Stop Instance"
 			}
 		]
 	},

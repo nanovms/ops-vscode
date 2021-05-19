@@ -7,6 +7,11 @@ import { Nanos } from "./NanosRepo";
 interface Ops {
   run(filePath: string, configPath: string): ChildProcessWithoutNullStreams
   build(filePath: string, configPath: string): ChildProcessWithoutNullStreams
+
+  startInstance(name: string): ChildProcessWithoutNullStreams
+  stopInstance(name: string): ChildProcessWithoutNullStreams
+  listImages(): string[]
+  listInstances(): string[]
 }
 
 interface NanosRepo {
@@ -116,5 +121,48 @@ export default class CmdHandler {
     await exec(`kill $(ps -o pid= --ppid ${pid})`);
 
     return spawn("kill", ["-9", "" + pid]);
+  };
+
+  startInstance = async (out: vscode.OutputChannel): Promise<ChildProcessWithoutNullStreams> => {
+    let names = this.ops.listImages();
+    if (names.length === 0) {
+      return Promise.reject("Cannot find created images");
+    }
+
+    let name = await vscode.window.showQuickPick(names, { placeHolder: 'Select image to run' });
+    if (!name) {
+      return Promise.reject("No image selected");
+    }
+
+    let proc = this.ops.startInstance(name);
+    proc.on("error", function (err) {
+      out.appendLine(`Failed to run image '${name}': ${err.message}`);
+    });
+    return proc;
+  };
+
+  stopInstance = async (out: vscode.OutputChannel): Promise<ChildProcessWithoutNullStreams> => {
+    let names = this.ops.listInstances();
+    if (names.length === 0) {
+      return Promise.reject("Cannot find running instances");
+    }
+
+    let name = await vscode.window.showQuickPick(names, { placeHolder: 'Select instance to stop' });
+    if (!name) {
+      return Promise.reject("No instance selected");
+    }
+
+    let proc = this.ops.stopInstance(name);
+    proc.on("error", function (err) {
+      out.appendLine(`Failed to stop instance '${name}': ${err.message}`);
+    });
+
+    proc.on("close", (code) => {
+      if (code === 0) {
+        out.appendLine(`Instance '${name}' stopped`);
+      }
+    });
+
+    return proc;
   };
 }
