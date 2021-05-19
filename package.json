@@ -2,9 +2,10 @@
 	"name": "ops",
 	"publisher": "nanovms",
 	"repository": "https://github.com/nanovms/ops-vscode",
+	"icon": "images/icon.png",
 	"displayName": "ops",
 	"description": "Ops is a tool for creating and running a Nanos unikernel. It is used to package, create and run your application as a nanos unikernel instance.",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"engines": {
 		"vscode": "^1.53.0"
 	},
