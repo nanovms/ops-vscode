@@ -35,11 +35,11 @@ export default class Ops {
     return this._runOps(args);
   }
 
-  runImage(name: string): ChildProcessWithoutNullStreams {
+  startInstance(name: string): ChildProcessWithoutNullStreams {
     return this._runOps(["--show-errors", "instance", "create", name]);
   }
 
-  stopImage(name: string): ChildProcessWithoutNullStreams {
+  stopInstance(name: string): ChildProcessWithoutNullStreams {
     return this._runOps(["--show-errors", "instance", "delete", name]);
   }
 

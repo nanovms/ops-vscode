@@ -17,8 +17,8 @@
 		"onCommand:ops.build",
 		"onCommand:ops.stop",
 		"onCommand:ops.runWithConfig",
-		"onCommand:ops.runImage",
-		"onCommand:ops.stopImage"
+		"onCommand:ops.startInstance",
+		"onCommand:ops.stopInstance"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -44,12 +44,12 @@
 				"title": "Ops: Run with configuration"
 			},
 			{
-				"command": "ops.runImage",
-				"title": "Ops: Run Image"
+				"command": "ops.startInstance",
+				"title": "Ops: Start Instance"
 			},
 			{
-				"command": "ops.stopImage",
-				"title": "Ops: Stop Image"
+				"command": "ops.stopInstance",
+				"title": "Ops: Stop Instance"
 			}
 		]
 	},

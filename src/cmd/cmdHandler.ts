@@ -8,8 +8,8 @@ interface Ops {
   run(filePath: string, configPath: string): ChildProcessWithoutNullStreams
   build(filePath: string, configPath: string): ChildProcessWithoutNullStreams
 
-  runImage(name: string): ChildProcessWithoutNullStreams
-  stopImage(name: string): ChildProcessWithoutNullStreams
+  startInstance(name: string): ChildProcessWithoutNullStreams
+  stopInstance(name: string): ChildProcessWithoutNullStreams
   listImages(): string[]
   listInstances(): string[]
 }
@@ -123,7 +123,7 @@ export default class CmdHandler {
     return spawn("kill", ["-9", "" + pid]);
   };
 
-  runImage = async (out: vscode.OutputChannel): Promise<ChildProcessWithoutNullStreams> => {
+  startInstance = async (out: vscode.OutputChannel): Promise<ChildProcessWithoutNullStreams> => {
     let names = this.ops.listImages();
     if (names.length === 0) {
       return Promise.reject("Cannot find created images");
@@ -134,14 +134,14 @@ export default class CmdHandler {
       return Promise.reject("No image selected");
     }
 
-    let proc = this.ops.runImage(name);
+    let proc = this.ops.startInstance(name);
     proc.on("error", function (err) {
       out.appendLine(`Failed to run image '${name}': ${err.message}`);
     });
     return proc;
   };
 
-  stopImage = async (out: vscode.OutputChannel): Promise<ChildProcessWithoutNullStreams> => {
+  stopInstance = async (out: vscode.OutputChannel): Promise<ChildProcessWithoutNullStreams> => {
     let names = this.ops.listInstances();
     if (names.length === 0) {
       return Promise.reject("Cannot find running instances");
@@ -152,7 +152,7 @@ export default class CmdHandler {
       return Promise.reject("No instance selected");
     }
 
-    let proc = this.ops.stopImage(name);
+    let proc = this.ops.stopInstance(name);
     proc.on("error", function (err) {
       out.appendLine(`Failed to stop instance '${name}': ${err.message}`);
     });
