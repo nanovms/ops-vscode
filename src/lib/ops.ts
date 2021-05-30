@@ -2,20 +2,29 @@ import { ChildProcessWithoutNullStreams, execSync, SpawnOptionsWithoutStdio } fr
 
 type Spawn = (command: string, args?: readonly string[] | undefined, options?: SpawnOptionsWithoutStdio | undefined) => ChildProcessWithoutNullStreams;
 
-export default class Ops {
+export interface BuildOptions {
+  imageName: string | undefined;
+  mounts: string | undefined;
+}
+
+export class Ops {
   spawn: Spawn;
 
   constructor(_spawner: Spawn) {
     this.spawn = _spawner;
   }
 
-  build(filePath: string, configPath: string): ChildProcessWithoutNullStreams {
+  build(filePath: string, options: BuildOptions): ChildProcessWithoutNullStreams {
     let args = ["build", filePath];
 
-    if (configPath) {
-      args = args.concat(["-c", configPath])
+    if (options.imageName) {
+      args = args.concat(["--imagename", options.imageName]);
     }
 
+    if (options.mounts) {
+      args = args.concat(["--mounts", options.mounts]);
+    }
+    console.log(args);
     return this._runOps(args);
   }
 
@@ -29,7 +38,7 @@ export default class Ops {
     }
 
     if (configPath) {
-      args = args.concat(["-c", configPath])
+      args = args.concat(["-c", configPath]);
     }
 
     return this._runOps(args);

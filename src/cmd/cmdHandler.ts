@@ -1,18 +1,9 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { ChildProcessWithoutNullStreams, exec, spawn } from "child_process";
-
 import pickExplorerFile from "./pickExplorerFile";
 import { Nanos } from "./NanosRepo";
-
-interface Ops {
-  run(filePath: string, configPath: string): ChildProcessWithoutNullStreams
-  build(filePath: string, configPath: string): ChildProcessWithoutNullStreams
-
-  startInstance(name: string): ChildProcessWithoutNullStreams
-  stopInstance(name: string): ChildProcessWithoutNullStreams
-  listImages(): string[]
-  listInstances(): string[]
-}
+import * as lib from "../lib/ops";
 
 interface NanosRepo {
   add(u: Nanos): void
@@ -21,19 +12,35 @@ interface NanosRepo {
   getPIDFromTitle(uTitle: string): number
 }
 
-
 export default class CmdHandler {
-  ops: Ops;
+  ops: lib.Ops;
   nanosRepo: NanosRepo;
 
-  constructor(_ops: Ops, _repo: NanosRepo) {
+  constructor(_ops: lib.Ops, _repo: NanosRepo) {
     this.ops = _ops;
     this.nanosRepo = _repo;
   }
 
   build = async (): Promise<ChildProcessWithoutNullStreams> => {
     const filePath = await pickExplorerFile();
-    return this.ops.build(filePath, "");
+
+    let fileName = path.basename(filePath);
+    fileName = fileName.replace(path.extname(fileName), "");
+    let imageName = await vscode.window.showInputBox({
+      title: "Image Name",
+      value: fileName
+    });
+
+    let mounts = await vscode.window.showInputBox({
+      title: "Mounts"
+    });
+
+    let opts = {
+      imageName: imageName,
+      mounts: mounts?.trim().length ? mounts : undefined
+    };
+
+    return this.ops.build(filePath, opts);
   };
 
   run = async (): Promise<ChildProcessWithoutNullStreams> => {
