@@ -89,7 +89,12 @@ export default class CmdHandler {
       throw new Error("Open the file you want to execute");
     }
 
-    const proc = this.ops.run(filePath);
+    let opts = await this._askImageNameAndMounts(filePath);
+    const proc = this.ops.run(filePath, {
+      configPath: undefined,
+      imageName: opts.imageName,
+      mounts: opts.mounts
+    });
 
     this.nanosRepo.add({
       pid: proc.pid,
