@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { spawn } from 'child_process';
 
-import Ops from './lib/ops';
+import * as lib from './lib/ops';
 import CmdHandler from './cmd/cmdHandler';
 import handleCmd from './cmd/handleCmd';
 import NanosRepo from './cmd/NanosRepo';
@@ -12,7 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let out = vscode.window.createOutputChannel("ops");
 
-	const ops = new Ops(spawn);
+	const ops = new lib.Ops(spawn);
 	const repo = new NanosRepo(context);
 	const cmdHandler = new CmdHandler(ops, repo);
 
