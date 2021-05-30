@@ -33,7 +33,6 @@ export default class CmdHandler {
     let opts = await this._askImageNameAndMounts(filePath);
 
     const proc = this.ops.run(filePath, {
-      configPath: undefined,
       imageName: opts.imageName,
       mounts: opts.mounts
     });
@@ -92,7 +91,6 @@ export default class CmdHandler {
 
     let opts = await this._askImageNameAndMounts(filePath);
     const proc = this.ops.run(filePath, {
-      configPath: undefined,
       imageName: opts.imageName,
       mounts: opts.mounts
     });
