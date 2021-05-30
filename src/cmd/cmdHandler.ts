@@ -148,11 +148,13 @@ export default class CmdHandler {
     });
 
     let ports = await vscode.window.showInputBox({
-      title: "Ports to Open (comma-separated)"
+      title: "Ports to Open",
+      placeHolder: "Comma-separated port numbers"
     });
 
     let udpPorts = await vscode.window.showInputBox({
-      title: "UDP Ports to Open (comma-separated)"
+      title: "UDP Ports to Open",
+      placeHolder: "Comma-separated port numbers"
     });
 
     let proc = this.ops.startInstance(name, {
@@ -200,7 +202,8 @@ export default class CmdHandler {
     });
 
     let mounts = await vscode.window.showInputBox({
-      title: "Mounts"
+      title: "Mount Points",
+      placeHolder: "Comma-separated [volume_id:mount_path]"
     });
 
     return {
