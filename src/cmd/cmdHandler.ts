@@ -45,7 +45,25 @@ export default class CmdHandler {
 
   run = async (): Promise<ChildProcessWithoutNullStreams> => {
     const filePath = await pickExplorerFile();
-    const proc = this.ops.run(filePath, "");
+
+    let fileName = path.basename(filePath);
+    fileName = fileName.replace(path.extname(fileName), "");
+    let imageName = await vscode.window.showInputBox({
+      title: "Image Name",
+      value: fileName
+    });
+
+    let mounts = await vscode.window.showInputBox({
+      title: "Mounts"
+    });
+
+    let opts = {
+      configPath: undefined,
+      imageName: imageName,
+      mounts: mounts?.trim().length ? mounts : undefined
+    };
+
+    const proc = this.ops.run(filePath, opts);
 
     this.nanosRepo.add({
       pid: proc.pid,
@@ -70,7 +88,11 @@ export default class CmdHandler {
       }
     });
 
-    const proc = this.ops.run(filePath, configPath);
+    const proc = this.ops.run(filePath, {
+      configPath: configPath,
+      imageName: undefined,
+      mounts: undefined
+    });
 
     this.nanosRepo.add({
       pid: proc.pid,
@@ -93,7 +115,7 @@ export default class CmdHandler {
       throw new Error("Open the file you want to execute");
     }
 
-    const proc = this.ops.run(filePath, "");
+    const proc = this.ops.run(filePath);
 
     this.nanosRepo.add({
       pid: proc.pid,

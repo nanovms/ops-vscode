@@ -7,6 +7,12 @@ export interface BuildOptions {
   mounts: string | undefined;
 }
 
+export interface RunOptions {
+  configPath: string | undefined;
+  imageName: string | undefined;
+  mounts: string | undefined;
+}
+
 export class Ops {
   spawn: Spawn;
 
@@ -24,11 +30,11 @@ export class Ops {
     if (options.mounts) {
       args = args.concat(["--mounts", options.mounts]);
     }
-    console.log(args);
+
     return this._runOps(args);
   }
 
-  run(filePath: string, configPath: string): ChildProcessWithoutNullStreams {
+  run(filePath: string, options?: RunOptions): ChildProcessWithoutNullStreams {
     let args: string[] = [];
 
     if (filePath.indexOf(".js") >= 0) {
@@ -37,8 +43,18 @@ export class Ops {
       args = ["run", filePath];
     }
 
-    if (configPath) {
-      args = args.concat(["-c", configPath]);
+    if (options) {
+      if (options.imageName) {
+        args = args.concat(["--imagename", options.imageName]);
+      }
+
+      if (options.mounts) {
+        args = args.concat(["--mounts", options.mounts]);
+      }
+
+      if (options.configPath) {
+        args = args.concat(["-c", options.configPath]);
+      }
     }
 
     return this._runOps(args);
