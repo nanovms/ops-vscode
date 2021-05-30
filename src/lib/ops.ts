@@ -3,20 +3,20 @@ import { ChildProcessWithoutNullStreams, execSync, SpawnOptionsWithoutStdio } fr
 type Spawn = (command: string, args?: readonly string[] | undefined, options?: SpawnOptionsWithoutStdio | undefined) => ChildProcessWithoutNullStreams;
 
 export interface BuildOptions {
-  imageName: string | undefined;
-  mounts: string | undefined;
+  imageName?: string;
+  mounts?: string;
 }
 
 export interface RunOptions {
-  configPath: string | undefined;
-  imageName: string | undefined;
-  mounts: string | undefined;
+  configPath?: string;
+  imageName?: string;
+  mounts?: string;
 }
 
 export interface StartInstanceOptions {
-  instanceName: string | undefined;
-  ports: string | undefined;
-  udpPorts: string | undefined;
+  instanceName?: string;
+  ports?: string;
+  udpPorts?: string;
 }
 
 export class Ops {
