@@ -4,6 +4,7 @@ import { ChildProcessWithoutNullStreams, exec, spawn } from "child_process";
 import pickExplorerFile from "./pickExplorerFile";
 import { Nanos } from "./NanosRepo";
 import * as lib from "../lib/ops";
+import { stderr } from 'process';
 
 interface NanosRepo {
   add(u: Nanos): void
@@ -142,7 +143,23 @@ export default class CmdHandler {
       return Promise.reject("No image selected");
     }
 
-    let proc = this.ops.startInstance(name);
+    let instanceName = await vscode.window.showInputBox({
+      title: "Instance Name"
+    });
+
+    let ports = await vscode.window.showInputBox({
+      title: "Ports to Open (comma-separated)"
+    });
+
+    let udpPorts = await vscode.window.showInputBox({
+      title: "UDP Ports to Open (comma-separated)"
+    });
+
+    let proc = this.ops.startInstance(name, {
+      instanceName: instanceName,
+      ports: this._sanitizeArrayInput(ports),
+      udpPorts: this._sanitizeArrayInput(udpPorts)
+    });
     proc.on("error", function (err) {
       out.appendLine(`Failed to run image '${name}': ${err.message}`);
     });
@@ -190,5 +207,21 @@ export default class CmdHandler {
       imageName: imageName,
       mounts: mounts?.trim().length ? mounts : undefined
     };
+  };
+
+  _sanitizeArrayInput = (s: string | undefined): string | undefined => {
+    if (!s) {
+      return s;
+    }
+
+    let str = s.trim();
+    if (str.length === 0) {
+      return undefined;
+    }
+
+    if (str.endsWith(",")) {
+      str = str.substring(0, str.length - 1);
+    }
+    return str;
   };
 }

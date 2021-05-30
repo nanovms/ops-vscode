@@ -13,6 +13,12 @@ export interface RunOptions {
   mounts: string | undefined;
 }
 
+export interface StartInstanceOptions {
+  instanceName: string | undefined;
+  ports: string | undefined;
+  udpPorts: string | undefined;
+}
+
 export class Ops {
   spawn: Spawn;
 
@@ -60,7 +66,19 @@ export class Ops {
     return this._runOps(args);
   }
 
-  startInstance(name: string): ChildProcessWithoutNullStreams {
+  startInstance(name: string, options: StartInstanceOptions): ChildProcessWithoutNullStreams {
+    let args: string[] = [];
+    if (options.instanceName) {
+      args = args.concat(["--instance-name", options.instanceName]);
+    }
+
+    if (options.ports) {
+      args = args.concat(["--port", options.ports]);
+    }
+
+    if (options.udpPorts) {
+      args = args.concat(["--udp", options.udpPorts]);
+    }
     return this._runOps(["--show-errors", "instance", "create", name]);
   }
 
@@ -106,6 +124,6 @@ export class Ops {
   }
 
   _runOps(args: string[]): ChildProcessWithoutNullStreams {
-    return this.spawn("ops", args, { shell: '/bin/bash' });
+    return this.spawn("ops", args.concat(["--show-errors"]), { shell: '/bin/bash' });
   }
 }
