@@ -5,6 +5,7 @@ type Spawn = (command: string, args?: readonly string[] | undefined, options?: S
 export interface BuildOptions {
   imageName?: string;
   mounts?: string;
+  configPath?: string;
 }
 
 export interface RunOptions {
@@ -35,6 +36,10 @@ export class Ops {
 
     if (options.mounts) {
       args = args.concat(["--mounts", options.mounts]);
+    }
+
+    if (options.configPath) {
+      args = args.concat(["-c", options.configPath]);
     }
 
     return this._runOps(args);
