@@ -134,7 +134,9 @@ export default class CmdHandler {
       return Promise.reject("No image selected");
     }
 
-    let instanceName = await vscode.window.showInputBox();
+    let instanceName = await vscode.window.showInputBox({
+      placeHolder: "Instance name to use"
+    });
     let ports = await vscode.window.showInputBox({
       placeHolder: "Comma-separated port numbers"
     });
@@ -183,7 +185,8 @@ export default class CmdHandler {
     let fileName = path.basename(filepath);
     fileName = fileName.replace(path.extname(fileName), "");
     return vscode.window.showInputBox({
-      value: fileName
+      value: fileName,
+      placeHolder: "Image name to use"
     });
   };
 
