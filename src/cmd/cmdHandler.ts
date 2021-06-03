@@ -138,11 +138,11 @@ export default class CmdHandler {
       placeHolder: "Instance name to use"
     });
     let ports = await vscode.window.showInputBox({
-      placeHolder: "Comma-separated port numbers"
+      placeHolder: "Comma-separated TCP ports to open"
     });
 
     let udpPorts = await vscode.window.showInputBox({
-      placeHolder: "Comma-separated port numbers"
+      placeHolder: "Comma-separated UDP ports to open"
     });
 
     let proc = this.ops.startInstance(name, {
