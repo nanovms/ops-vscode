@@ -134,17 +134,12 @@ export default class CmdHandler {
       return Promise.reject("No image selected");
     }
 
-    let instanceName = await vscode.window.showInputBox({
-      // title: "Instance Name"
-    });
-
+    let instanceName = await vscode.window.showInputBox();
     let ports = await vscode.window.showInputBox({
-      // title: "Ports to Open",
       placeHolder: "Comma-separated port numbers"
     });
 
     let udpPorts = await vscode.window.showInputBox({
-      // title: "UDP Ports to Open",
       placeHolder: "Comma-separated port numbers"
     });
 
@@ -188,14 +183,12 @@ export default class CmdHandler {
     let fileName = path.basename(filepath);
     fileName = fileName.replace(path.extname(fileName), "");
     return vscode.window.showInputBox({
-      // title: "Image Name",
       value: fileName
     });
   };
 
   _askMounts = async (): Promise<string | undefined> => {
     return vscode.window.showInputBox({
-      // title: "Mount Points",
       placeHolder: "Comma-separated [volume_id:mount_path]"
     });
   };
