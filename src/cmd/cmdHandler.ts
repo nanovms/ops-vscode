@@ -1,10 +1,9 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { ChildProcessWithoutNullStreams, exec, spawn } from "child_process";
-import pickExplorerFile from "./pickExplorerFile";
-import { Nanos } from "./NanosRepo";
-import * as lib from "../lib/ops";
-import { stderr } from 'process';
+import { ChildProcessWithoutNullStreams, exec, spawn } from 'child_process';
+import pickExplorerFile from './pickExplorerFile';
+import { Nanos } from './NanosRepo';
+import { Ops, BuildOptions } from '../lib/ops/index';
 
 interface NanosRepo {
   add(u: Nanos): void
@@ -14,10 +13,10 @@ interface NanosRepo {
 }
 
 export default class CmdHandler {
-  ops: lib.Ops;
+  ops: Ops;
   nanosRepo: NanosRepo;
 
-  constructor(_ops: lib.Ops, _repo: NanosRepo) {
+  constructor(_ops: Ops, _repo: NanosRepo) {
     this.ops = _ops;
     this.nanosRepo = _repo;
   }
@@ -142,16 +141,16 @@ export default class CmdHandler {
     }
 
     let instanceName = await vscode.window.showInputBox({
-      title: "Instance Name"
+      // title: "Instance Name"
     });
 
     let ports = await vscode.window.showInputBox({
-      title: "Ports to Open",
+      // title: "Ports to Open",
       placeHolder: "Comma-separated port numbers"
     });
 
     let udpPorts = await vscode.window.showInputBox({
-      title: "UDP Ports to Open",
+      // title: "UDP Ports to Open",
       placeHolder: "Comma-separated port numbers"
     });
 
@@ -191,16 +190,16 @@ export default class CmdHandler {
     return proc;
   };
 
-  _askImageNameAndMounts = async (filepath: string): Promise<lib.BuildOptions> => {
+  _askImageNameAndMounts = async (filepath: string): Promise<BuildOptions> => {
     let fileName = path.basename(filepath);
     fileName = fileName.replace(path.extname(fileName), "");
     let imageName = await vscode.window.showInputBox({
-      title: "Image Name",
+      // title: "Image Name",
       value: fileName
     });
 
     let mounts = await vscode.window.showInputBox({
-      title: "Mount Points",
+      // title: "Mount Points",
       placeHolder: "Comma-separated [volume_id:mount_path]"
     });
 
