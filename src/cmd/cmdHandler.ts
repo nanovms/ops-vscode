@@ -23,17 +23,17 @@ export default class CmdHandler {
 
   build = async (): Promise<ChildProcessWithoutNullStreams> => {
     const filePath = await pickExplorerFile();
-    let opts = await this._askImageNameAndMounts(filePath);
-    return this.ops.build(filePath, opts);
+    return this.ops.build(filePath, {
+      imageName: await this._askImageName(filePath),
+      mounts: await this._askMounts()
+    });
   };
 
   run = async (): Promise<ChildProcessWithoutNullStreams> => {
     const filePath = await pickExplorerFile();
-    let opts = await this._askImageNameAndMounts(filePath);
-
     const proc = this.ops.run(filePath, {
-      imageName: opts.imageName,
-      mounts: opts.mounts
+      imageName: await this._askImageName(filePath),
+      mounts: await this._askMounts()
     });
 
     this.nanosRepo.add({
@@ -59,12 +59,10 @@ export default class CmdHandler {
       }
     });
 
-    let opts = await this._askImageNameAndMounts(filePath);
-
     const proc = this.ops.run(filePath, {
       configPath: configPath,
-      imageName: opts.imageName,
-      mounts: opts.mounts
+      imageName: await this._askImageName(filePath),
+      mounts: await this._askMounts()
     });
 
     this.nanosRepo.add({
@@ -80,18 +78,14 @@ export default class CmdHandler {
   };
 
   runOpen = async (): Promise<ChildProcessWithoutNullStreams> => {
-    let filePath;
-
-    filePath = vscode.window.activeTextEditor?.document.uri.path;
-
+    let filePath = vscode.window.activeTextEditor?.document.uri.path;
     if (!filePath) {
       throw new Error("Open the file you want to execute");
     }
 
-    let opts = await this._askImageNameAndMounts(filePath);
     const proc = this.ops.run(filePath, {
-      imageName: opts.imageName,
-      mounts: opts.mounts
+      imageName: await this._askImageName(filePath),
+      mounts: await this._askMounts()
     });
 
     this.nanosRepo.add({
@@ -190,23 +184,20 @@ export default class CmdHandler {
     return proc;
   };
 
-  _askImageNameAndMounts = async (filepath: string): Promise<BuildOptions> => {
+  _askImageName = async (filepath: string): Promise<string | undefined> => {
     let fileName = path.basename(filepath);
     fileName = fileName.replace(path.extname(fileName), "");
-    let imageName = await vscode.window.showInputBox({
+    return vscode.window.showInputBox({
       // title: "Image Name",
       value: fileName
     });
+  };
 
-    let mounts = await vscode.window.showInputBox({
+  _askMounts = async (): Promise<string | undefined> => {
+    return vscode.window.showInputBox({
       // title: "Mount Points",
       placeHolder: "Comma-separated [volume_id:mount_path]"
     });
-
-    return {
-      imageName: imageName,
-      mounts: mounts?.trim().length ? mounts : undefined
-    };
   };
 
   _sanitizeArrayInput = (s: string | undefined): string | undefined => {
