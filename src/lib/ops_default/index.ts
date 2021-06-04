@@ -120,7 +120,6 @@ export class OpsDefault implements Ops {
     }
 
     _runOps(args: string[]): ChildProcessWithoutNullStreams {
-        console.log(`args: ${args}`);
         return this.spawn("ops", args.concat(["--show-errors"]), { shell: '/bin/bash' });
     }
 }

@@ -210,7 +210,6 @@ export default class CmdHandler {
         }
       }
     }
-    console.log(mounts.join());
     return mounts.join();
   };
 
