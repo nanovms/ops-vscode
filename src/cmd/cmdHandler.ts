@@ -190,7 +190,7 @@ export default class CmdHandler {
     });
   };
 
-  _askMounts = async (): Promise<string | undefined> => {
+  _askMounts = async (): Promise<string[] | undefined> => {
     let volumeIDs = this.ops.listVolumeIDWithName();
     let ids = await vscode.window.showQuickPick(volumeIDs, {
       placeHolder: "Select volumes to mount",
@@ -212,7 +212,7 @@ export default class CmdHandler {
         }
       }
     }
-    return mounts.join();
+    return mounts;
   };
 
   _sanitizeArrayInput = (s: string | undefined): string | undefined => {

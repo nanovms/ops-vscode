@@ -2,14 +2,14 @@ import { ChildProcessWithoutNullStreams } from 'child_process';
 
 export interface BuildOptions {
     imageName?: string;
-    mounts?: string;
+    mounts?: string[];
     configPath?: string;
 }
 
 export interface RunOptions {
     configPath?: string;
     imageName?: string;
-    mounts?: string;
+    mounts?: string[];
 }
 
 export interface StartInstanceOptions {

@@ -18,7 +18,9 @@ export class OpsDefault implements Ops {
         }
 
         if (options.mounts) {
-            args = args.concat(["--mounts", options.mounts]);
+            for (let i = 0; i < options.mounts.length; i++) {
+                args = args.concat(["--mounts", options.mounts[i]]);
+            }
         }
 
         if (options.configPath) {
@@ -43,7 +45,9 @@ export class OpsDefault implements Ops {
             }
 
             if (options.mounts) {
-                args = args.concat(["--mounts", options.mounts]);
+                for (let i = 0; i < options.mounts.length; i++) {
+                    args = args.concat(["--mounts", options.mounts[i]]);
+                }
             }
 
             if (options.configPath) {
@@ -89,7 +93,7 @@ export class OpsDefault implements Ops {
         let outStr = cmdOut.toString();
         let ids = this._extractColumnFromCmdOut(outStr, 1);
         let names = this._extractColumnFromCmdOut(outStr, 2);
-        for(let i = 0; i < names.length; i++) {
+        for (let i = 0; i < names.length; i++) {
             ids[i] = `${ids[i]} --- ${names[i]}`;
         }
         return ids;
@@ -117,7 +121,7 @@ export class OpsDefault implements Ops {
 
             columns = lines[i].split('|');
             value = columns[colIndex].trim();
-            if(value.length === 0) {
+            if (value.length === 0) {
                 continue;
             }
             rows.push(value);
