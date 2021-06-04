@@ -191,9 +191,27 @@ export default class CmdHandler {
   };
 
   _askMounts = async (): Promise<string | undefined> => {
-    return vscode.window.showInputBox({
-      placeHolder: "Comma-separated [volume_id:mount_path]"
+    let volumeIDs = this.ops.listVolumeID();
+    let ids = await vscode.window.showQuickPick(volumeIDs, {
+      placeHolder: "Select volumes to mount",
+      canPickMany: true
     });
+
+    let mounts: string[] = [];
+    if (ids?.length) {
+      let mountPath: string | undefined;
+      for (let i = 0; i < ids.length; i++) {
+        mountPath = await vscode.window.showInputBox({
+          prompt: `Mount point for volume ${ids[i]}`,
+          placeHolder: "Path to mount the volume"
+        });
+        if (mountPath) {
+          mounts.push(`${ids[i]}:${mountPath}`);
+        }
+      }
+    }
+    console.log(mounts.join());
+    return mounts.join();
   };
 
   _sanitizeArrayInput = (s: string | undefined): string | undefined => {

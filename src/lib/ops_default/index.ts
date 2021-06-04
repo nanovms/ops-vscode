@@ -84,6 +84,11 @@ export class OpsDefault implements Ops {
         return this._extractColumnFromCmdOut(cmdOut.toString(), 1);
     }
 
+    listVolumeID(): string[] {
+        let cmdOut = execSync("ops volume list");
+        return this._extractColumnFromCmdOut(cmdOut.toString(), 1);
+    }
+
     _extractColumnFromCmdOut(cmdOut: string, colIndex: number): string[] {
         let rows: string[] = [];
         let lines = cmdOut.toString().split('\n');
@@ -106,12 +111,16 @@ export class OpsDefault implements Ops {
 
             columns = lines[i].split('|');
             value = columns[colIndex].trim();
+            if(value.length === 0) {
+                continue;
+            }
             rows.push(value);
         }
         return rows;
     }
 
     _runOps(args: string[]): ChildProcessWithoutNullStreams {
+        console.log(`args: ${args}`);
         return this.spawn("ops", args.concat(["--show-errors"]), { shell: '/bin/bash' });
     }
 }
