@@ -25,5 +25,5 @@ export interface Ops {
     stopInstance(name: string): ChildProcessWithoutNullStreams;
     listInstances(): string[];
     listImages(): string[];
-    listVolumeID(): string[];
+    listVolumeIDWithName(): string[];
 }

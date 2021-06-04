@@ -84,9 +84,15 @@ export class OpsDefault implements Ops {
         return this._extractColumnFromCmdOut(cmdOut.toString(), 1);
     }
 
-    listVolumeID(): string[] {
+    listVolumeIDWithName(): string[] {
         let cmdOut = execSync("ops volume list");
-        return this._extractColumnFromCmdOut(cmdOut.toString(), 1);
+        let outStr = cmdOut.toString();
+        let ids = this._extractColumnFromCmdOut(outStr, 1);
+        let names = this._extractColumnFromCmdOut(outStr, 2);
+        for(let i = 0; i < names.length; i++) {
+            ids[i] = `${ids[i]} --- ${names[i]}`;
+        }
+        return ids;
     }
 
     _extractColumnFromCmdOut(cmdOut: string, colIndex: number): string[] {

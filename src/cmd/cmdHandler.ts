@@ -191,13 +191,14 @@ export default class CmdHandler {
   };
 
   _askMounts = async (): Promise<string | undefined> => {
-    let volumeIDs = this.ops.listVolumeID();
+    let volumeIDs = this.ops.listVolumeIDWithName();
     let ids = await vscode.window.showQuickPick(volumeIDs, {
       placeHolder: "Select volumes to mount",
       canPickMany: true
     });
 
     let mounts: string[] = [];
+    let idparts: string[];
     if (ids?.length) {
       let mountPath: string | undefined;
       for (let i = 0; i < ids.length; i++) {
@@ -206,7 +207,8 @@ export default class CmdHandler {
           placeHolder: "Path to mount the volume"
         });
         if (mountPath) {
-          mounts.push(`${ids[i]}:${mountPath}`);
+          idparts = ids[i].split('---');
+          mounts.push(`${idparts[0].trim()}:${mountPath}`);
         }
       }
     }
